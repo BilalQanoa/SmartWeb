@@ -5,9 +5,15 @@ class User(models.Model):
     last_name=models.CharField(max_length=255,null=True)
     email=models.EmailField(null=True,unique=True)
     password=models.CharField(max_length=255,null=True)
+    google_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    profile_picture = models.URLField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    
+
+    @property
+    def is_google_user(self):
+        return self.google_id is not None
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
