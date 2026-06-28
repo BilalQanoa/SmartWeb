@@ -1096,3 +1096,278 @@ h6 {
     border-radius: 0.35rem;
     flex-shrink: 0;
 }
+
+/* =========================================
+   WIZARD STEPS LAYOUT
+   ========================================= */
+.steps-wrapper {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.steps-navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.steps-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.steps-brand img {
+    height: 32px;
+}
+
+.steps-indicator {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.step-item.active {
+    color: var(--primary-blue);
+}
+
+.step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.step-item.active .step-circle {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+.step-line {
+    width: 40px;
+    height: 1px;
+    background-color: #e2e8f0;
+}
+
+.steps-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #475569;
+}
+
+.steps-help-icon {
+    font-size: 1.25rem;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.steps-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.step-content-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 2rem;
+}
+
+.step-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.step-subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.wizard-cards-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 900px;
+}
+
+.wizard-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.wizard-card:hover {
+    transform: translateY(-4px);
+    border-color: #cbd5e1;
+}
+
+.wizard-card-recommended-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-blue);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 16px;
+    border-radius: 20px;
+}
+
+.wizard-card-icon {
+    width: 48px;
+    height: 48px;
+    background-color: #eff6ff;
+    color: var(--primary-blue);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.wizard-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1rem;
+}
+
+.wizard-card-desc {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+}
+
+.wizard-card-dropzone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.75rem;
+    background-color: #f8fafc;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wizard-card-dropzone i {
+    font-size: 1.5rem;
+}
+
+.wizard-card-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.wizard-tag {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+}
+
+.wizard-tag-primary {
+    background-color: #eff6ff;
+    color: var(--primary-blue);
+}
+
+.wizard-card-skeleton {
+    background-color: #f8fafc;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.skeleton-line {
+    background-color: #e2e8f0;
+    height: 10px;
+    border-radius: 5px;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-line:last-child {
+    margin-bottom: 0;
+}
+
+.wizard-continue-btn {
+    margin-top: 4rem;
+    background-color: #93c5fd;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.75rem 2.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.wizard-continue-btn:hover {
+    background-color: #60a5fa;
+    color: white;
+}
+
+.wizard-continue-btn.active {
+    background-color: #93c5fd; 
+    color: white;
+}
+
+.wizard-footer-text {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
