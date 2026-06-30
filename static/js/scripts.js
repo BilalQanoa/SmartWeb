@@ -3,36 +3,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll(".template-card");
     if (cards.length === 0) return; // Only execute on the templates dashboard
 
-    const browserBody = document.querySelector(".browser-body");
     const previewTitle = document.getElementById("preview-title");
     const browserTitle = document.querySelector(".browser-url-bar span");
     const openNewTabBtn = document.getElementById("open-new-tab-btn");
     const selectedInput = document.getElementById("selected-template-input");
+    const frame = document.getElementById('preview-frame');
 
     const themes = [
         {
             id: 'classic-scholar',
             name: "Classic Scholar &mdash; Version 2.4.1",
             displayUrl: "preview.smartapp.io/scholar-template",
-            src: "/portfolios/preview/light-1/"
+            src: "/portfolios/preview/academic-light/"
         },
         {
             id: 'modern-dark',
             name: "Modern Dark &mdash; Version 1.2.0",
             displayUrl: "preview.smartapp.io/modern-dark-02",
-            src: "/portfolios/preview/dark-1/"
+            src: "/portfolios/preview/modern-dark/"
         },
         {
             id: 'minimalist-lab',
             name: "Minimalist Lab &mdash; Version 3.1.2",
             displayUrl: "preview.smartapp.io/min-lab",
-            src: "/portfolios/preview/light-2/"
+            src: "/portfolios/preview/modern-light/"
         },
         {
             id: 'executive-academic',
             name: "Executive Academic &mdash; Version 1.0.5",
             displayUrl: "preview.smartapp.io/exec-academic",
-            src: "/portfolios/preview/dark-2/"
+            src: "/portfolios/preview/academic-dark/"
         }
     ];
 
@@ -61,21 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (browserTitle) browserTitle.textContent = themes[index].displayUrl;
         if (openNewTabBtn) openNewTabBtn.href = themes[index].src;
 
-        if (browserBody) {
-            browserBody.style.opacity = '0';
-            fetch(themes[index].src)
-                .then(response => response.text())
-                .then(html => {
-                    setTimeout(() => {
-                        browserBody.innerHTML = html;
-                        browserBody.style.opacity = '1';
-                    }, 150);
-                })
-                .catch(err => {
-                    console.error('Error loading template:', err);
-                    browserBody.innerHTML = '<div class="p-4 text-danger">Failed to load template preview.</div>';
-                    browserBody.style.opacity = '1';
-                });
+        if (frame) {
+            frame.style.opacity = '0';
+            frame.src = themes[index].src;
+            setTimeout(() => {
+                frame.style.opacity = '1';
+            }, 150);
         }
     }
 
@@ -85,8 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const initialCard = document.querySelector('.template-card.active') || cards[0];
     const initialIndex = Array.from(cards).indexOf(initialCard);
-    if (browserBody) {
-        browserBody.style.transition = 'opacity 0.15s ease-in-out';
+    if (frame) {
+        frame.style.transition = 'opacity 0.15s ease-in-out';
         if (openNewTabBtn) openNewTabBtn.href = themes[initialIndex]?.src || themes[0].src;
         setActiveCard(initialCard, initialIndex >= 0 ? initialIndex : 0);
     }

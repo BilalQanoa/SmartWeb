@@ -4,7 +4,15 @@ portfolios/onboarding.py
 Multi-step onboarding flow for newly registered users: collect profile info,
 publications, and teaching load, then let them pick a starting template.
 """
+import json
+from pathlib import Path
+from types import SimpleNamespace
+
+from django.conf import settings
+from django.db import OperationalError
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from accounts.models import User
 
@@ -135,13 +143,56 @@ def portfolio_detail(request, slug):
     })
 
 
+def resolve_preview_theme(theme_slug):
+    slug_aliases = {
+        'light-1': 'academic-light',
+        'dark-1': 'modern-dark',
+        'light-2': 'modern-light',
+        'dark-2': 'academic-dark',
+        'classic-scholar': 'academic-light',
+        'modern-dark': 'modern-dark',
+        'minimalist-lab': 'modern-light',
+        'executive-academic': 'academic-dark',
+    }
+    resolved_slug = slug_aliases.get(theme_slug, theme_slug)
+
+    try:
+        db_theme = Theme.objects.filter(slug=resolved_slug, is_active=True).first()
+    except OperationalError:
+        db_theme = None
+
+    if db_theme:
+        return db_theme
+
+    theme_dir = Path(settings.BASE_DIR) / 'templates' / 'themes' / resolved_slug
+    if not theme_dir.exists():
+        raise Http404('No Theme matches the given query.')
+
+    metadata_path = theme_dir / 'theme.json'
+    metadata = {}
+    if metadata_path.exists():
+        with metadata_path.open(encoding='utf-8') as fh:
+            metadata = json.load(fh)
+
+    return SimpleNamespace(
+        slug=resolved_slug,
+        name=metadata.get('name', resolved_slug.replace('-', ' ').title()),
+        description=metadata.get('description', ''),
+        template_path=f'themes/{resolved_slug}/index.html',
+        preview_image=metadata.get('preview_image', ''),
+        palette=metadata.get('palette', {}),
+        is_active=True,
+    )
+
+
+@xframe_options_exempt
 def portfolio_preview(request, theme_slug):
     if 'user_id' not in request.session:
         return redirect('accounts:login')
 
     user = get_current_user(request)
     profile = get_profile(user)
-    theme = get_object_or_404(Theme, slug=theme_slug, is_active=True)
+    theme = resolve_preview_theme(theme_slug)
 
     return render(request, theme.template_path, {
         'theme': theme,
