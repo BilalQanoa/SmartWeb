@@ -1,8 +1,9 @@
-
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, redirect, render
 from django.contrib import messages
 from accounts.models import User
-from portfolios.models import Profile, Publication, Teaching
+from django.urls import reverse
+
+from portfolios.models import Theme, Profile,Profile, Publication, Teaching
 from portfolios.forms import PublicationForm,ProfileForm, TeachingForm
 
 
@@ -29,8 +30,8 @@ def get_profile(user):
     return profile
 
 
-# ── الموجودة عندك ─────────────────────────────────────────────────────────
 def dashboard_view(request):
+
     if 'user_id' not in request.session:
         return redirect('accounts:login')
     user    = get_current_user(request)
@@ -50,8 +51,21 @@ def dashboard_view(request):
 def templates_view(request):
     if 'user_id' not in request.session:
         return redirect('accounts:login')
+
     user = get_current_user(request)
-    profile = get_profile(user)
+
+    # Ensure this user has a Profile row (auto-create on first visit)
+    default_theme = Theme.objects.filter(slug='academic-light', is_active=True).first()
+    full_name = (
+            getattr(user, 'full_name', None)
+            or f"{getattr(user, 'first_name', '')} {getattr(user, 'last_name', '')}".strip()
+            or getattr(user, 'username', None)
+            or getattr(user, 'email', 'User')
+    )
+    profile, _ = Profile.objects.get_or_create(
+        user=user,
+        defaults={'full_name': full_name, 'theme': default_theme},
+    )
 
     if request.method == 'POST':
         selected_template = request.POST.get('selected_template', profile.selected_template)
@@ -62,9 +76,26 @@ def templates_view(request):
             messages.success(request, 'Template selection saved successfully.')
             return redirect('dashboard:templates_dashboard')
 
+    # All active themes for the gallery
+    themes = Theme.objects.filter(is_active=True).order_by('name')
+
+    # Which theme is shown in the preview pane right now
+    preview_slug = request.GET.get('preview')
+    active_theme = None
+    if preview_slug:
+        active_theme = Theme.objects.filter(slug=preview_slug, is_active=True).first()
+    active_theme = active_theme or profile.theme or themes.first()
+
+    preview_url = None
+    if active_theme:
+        preview_url = reverse('portfolios:preview', args=[active_theme.slug])
+
     return render(request, 'dashboard/templates_dashboard.html', {
         'user': user,
         'profile': profile,
+        'themes': themes,
+        'active_theme': active_theme,
+        'preview_url': preview_url,
     })
 
 
@@ -77,6 +108,24 @@ def settings_view(request):
         'user': user,
         'profile': profile,
     })
+
+
+def set_theme_view(request):
+    """Save & Publish — sets the selected theme as the user's active theme."""
+    if 'user_id' not in request.session:
+        return redirect('accounts:login')
+    if request.method != 'POST':
+        return redirect('dashboard:templates_dashboard')
+
+    user = get_current_user(request)
+    profile = get_profile(user)
+
+    slug = request.POST.get('theme_slug')
+    theme = get_object_or_404(Theme, slug=slug, is_active=True)
+    profile.theme = theme
+    profile.save()
+
+    return redirect('dashboard:templates_dashboard')
 
 
 # ── Publications ──────────────────────────────────────────────────────────

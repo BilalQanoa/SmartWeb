@@ -1,5 +1,13 @@
+"""
+portfolios/onboarding.py
+
+Multi-step onboarding flow for newly registered users: collect profile info,
+publications, and teaching load, then let them pick a starting template.
+"""
 from django.shortcuts import render, redirect
+
 from accounts.models import User
+
 from .models import Profile, Publication, Teaching
 from .forms import ProfileForm, PublicationForm, TeachingForm
 
@@ -116,21 +124,3 @@ def onboarding_three(request):
         'selected_template': profile.selected_template or Profile.TEMPLATE_CLASSIC,
     }
     return render(request, 'onboarding/onboarding3.html', context)
-
-
-def dark_template1_preview(request):
-    return render(request, 'portfolios/dark_template1.html')
-
-
-def dark_template2_preview(request):
-    return render(request, 'portfolios/dark_template2.html')
-
-
-def light_template1_preview(request):
-    return render(request, 'portfolios/light_template1.html')
-
-
-def light_template2_preview(request):
-    return render(request, 'portfolios/light_template2.html')
-
-
