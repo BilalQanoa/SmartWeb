@@ -324,7 +324,7 @@ def edit_profile(request):
 
         teach_ids = request.POST.getlist('teach_id[]')
         course_names = request.POST.getlist('course_name[]')
-        course_semesters = request.POST.getlist('teachingscol[]')
+        course_semesters = request.POST.getlist('semester[]')
         course_descs = request.POST.getlist('course_desc[]')
         course_links = request.POST.getlist('syllabus_link[]')
 
