@@ -178,3 +178,10 @@ class ContactLinkForm(forms.ModelForm):
 #     extra=1, can_delete=True
 # )
 
+# ── FormSets ──────────────────────────────────────────────────────────────
+PublicationFormSet = inlineformset_factory(
+    Profile, Publication,
+    form=PublicationForm,
+    extra=1,
+    can_delete=True,
+)
