@@ -20,9 +20,10 @@ def add_missing_profile_columns(apps, schema_editor):
     add_column('theme_id', 'ALTER TABLE portfolios_profile ADD COLUMN theme_id bigint')
     add_column('is_published', 'ALTER TABLE portfolios_profile ADD COLUMN is_published bool DEFAULT 0')
 
-    cursor.execute(
-        "UPDATE portfolios_profile SET profile_image = profile_picture WHERE profile_image IS NULL"
-    )
+    if 'profile_picture' in existing_columns:
+        cursor.execute(
+            "UPDATE portfolios_profile SET profile_image = profile_picture WHERE profile_image IS NULL"
+        )
     cursor.execute(
         "UPDATE portfolios_profile SET current_status = '' WHERE current_status IS NULL"
     )
