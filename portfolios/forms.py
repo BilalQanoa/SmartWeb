@@ -84,7 +84,7 @@ class PublicationForm(forms.ModelForm):
 class TeachingForm(forms.ModelForm):
     class Meta:
         model  = Teaching
-        fields = ['course_name', 'description', 'syllabus_link', 'teachingscol']
+        fields = ['course_name', 'description', 'syllabus_link', 'semester']
         widgets = {
             'course_name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -99,7 +99,7 @@ class TeachingForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'https://...'
             }),
-            'teachingscol': forms.TextInput(attrs={
+            'semester': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'e.g. Fall 2024'
             }),
