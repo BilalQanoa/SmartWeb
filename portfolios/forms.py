@@ -191,3 +191,9 @@ TeachingFormSet = inlineformset_factory(
     extra=1,
     can_delete=True,
 )
+EducationFormSet = inlineformset_factory(
+    Profile, Education,
+    form=EducationForm,
+    extra=1,
+    can_delete=True,
+)
