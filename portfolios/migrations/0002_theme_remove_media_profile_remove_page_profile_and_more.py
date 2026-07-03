@@ -29,24 +29,24 @@ class Migration(migrations.Migration):
                 'ordering': ['name'],
             },
         ),
-        migrations.RemoveField(
-            model_name='media',
-            name='profile',
-        ),
-        migrations.RemoveField(
-            model_name='page',
-            name='profile',
-        ),
-        migrations.RenameField(
-            model_name='profile',
-            old_name='profile_picture',
-            new_name='profile_image',
-        ),
-        migrations.RenameField(
-            model_name='teaching',
-            old_name='teachingscol',
-            new_name='semester',
-        ),
+        # migrations.RemoveField(
+        #     model_name='media',
+        #     name='profile',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='page',
+        #     name='profile',
+        # ),
+        # migrations.RenameField(
+        #     model_name='profile',
+        #     old_name='profile_picture',
+        #     new_name='profile_image',
+        # ),
+        # migrations.RenameField(
+        #     model_name='teaching',
+        #     old_name='teachingscol',
+        #     new_name='semester',
+        # ),
         migrations.AddField(
             model_name='profile',
             name='citation_count',
@@ -180,13 +180,13 @@ class Migration(migrations.Migration):
             name='theme',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='portfolios.theme'),
         ),
-        migrations.DeleteModel(
-            name='Content',
-        ),
-        migrations.DeleteModel(
-            name='Media',
-        ),
-        migrations.DeleteModel(
-            name='Page',
-        ),
+        # migrations.DeleteModel(
+        #     name='Content',
+        # ),
+        # migrations.DeleteModel(
+        #     name='Media',
+        # ),
+        # migrations.DeleteModel(
+        #     name='Page',
+        # ),
     ]
