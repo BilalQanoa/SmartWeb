@@ -5,7 +5,7 @@ from .models import Profile, Publication, Teaching,ContactLink,Education
 
 # ── 1. Personal Info ─────────────────────────────────────────────────────
 class ProfileForm(forms.ModelForm):
-    # profile_image = forms.ImageField(
+    # profile_picture = forms.ImageField(
     #     required=False,
     #     widget=forms.FileInput(attrs={
     #         'class': 'form-control',
@@ -77,14 +77,14 @@ class ProfileForm(forms.ModelForm):
             if field_name in self.fields:
                 self.fields[field_name].required = True
 
-    def save(self, commit=True):
-        profile = super().save(commit=False)
-        picture = self.cleaned_data.get('profile_picture')
-        if picture:
-            profile.profile_image = picture
-        if commit:
-            profile.save()
-        return profile
+    # def save(self, commit=True):
+    #     profile = super().save(commit=False)
+    #     picture = self.cleaned_data.get('profile_picture')
+    #     if picture:
+    #         profile.profile_image = picture
+    #     if commit:
+    #         profile.save()
+    #     return profile
 
 
 # ── 2. Publication ───────────────────────────────────────────────────────
