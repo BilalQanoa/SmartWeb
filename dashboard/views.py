@@ -172,14 +172,14 @@ def set_theme_view(request):
     profile.save()
 
     return redirect('dashboard:templates_dashboard')
-    profile = get_profile(user)
+    # profile = get_profile(user)
 
-    slug = request.POST.get('theme_slug')
-    theme = get_object_or_404(Theme, slug=slug, is_active=True)
-    profile.theme = theme
-    profile.save()
+    # slug = request.POST.get('theme_slug')
+    # theme = get_object_or_404(Theme, slug=slug, is_active=True)
+    # profile.theme = theme
+    # profile.save()
 
-    return redirect('dashboard:templates_dashboard')
+    # return redirect('dashboard:templates_dashboard')
 
 
 # ── Publications ──────────────────────────────────────────────────────────
@@ -286,9 +286,9 @@ def delete_teaching(request, teach_id):
     next_url = request.GET.get('next', '')
     if next_url.startswith('/'):
         return redirect(next_url)
-    next_url = request.GET.get('next', '')
-    if next_url.startswith('/'):
-        return redirect(next_url)
+    # next_url = request.GET.get('next', '')
+    # if next_url.startswith('/'):
+    #     return redirect(next_url)
     return redirect('dashboard:main_dashboard')
 
 

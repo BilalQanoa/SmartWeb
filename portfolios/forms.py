@@ -5,13 +5,13 @@ from .models import Profile, Publication, Teaching,ContactLink,Education
 
 # ── 1. Personal Info ─────────────────────────────────────────────────────
 class ProfileForm(forms.ModelForm):
-    profile_picture = forms.ImageField(
-        required=False,
-        widget=forms.FileInput(attrs={
-            'class': 'form-control',
-            'accept': 'image/*',
-        })
-    )
+    # profile_image = forms.ImageField(
+    #     required=False,
+    #     widget=forms.FileInput(attrs={
+    #         'class': 'form-control',
+    #         'accept': 'image/*',
+    #     })
+    # )
 
     class Meta:
         model = Profile
