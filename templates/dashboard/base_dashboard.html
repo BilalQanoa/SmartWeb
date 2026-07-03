@@ -73,10 +73,15 @@
 
         <!-- Top Bar -->
         <header class="dashboard-topbar">
-            <div class="topbar-search">
+            <!-- <div class="topbar-search">
                 <i class="bi bi-search"></i>
-                <input type="text" placeholder="Search publications, tools, or papers..." class="topbar-search-input">
-            </div>
+                <input type="search" placeholder="Search publications, tools, or papers..." class="topbar-search-input">
+            </div> -->
+            <form action="{% url 'dashboard:search_dashboard' %}" method="GET" class="topbar-search">
+                <i class="bi bi-search"></i>
+                <input type="search" name="q" placeholder="Search publications, tools, or papers..."
+                    class="topbar-search-input" value="{{ request.GET.q }}">
+            </form>
             <div class="topbar-actions">
                 <button class="topbar-bell">
                     <i class="bi bi-bell"></i>
