@@ -385,19 +385,20 @@ def edit_profile(request):
         return redirect('accounts:login')
 
     user, profile = get_user_and_profile(request)
-
-    # كل formset بيعرف تلقائياً يجيب بيانات الـ profile
-    profile_form  = ProfileForm(
-        request.POST  or None,
-        request.FILES or None,
-        instance=profile,
-    )
-    pub_formset   = PublicationFormSet(request.POST or None, instance=profile, prefix='pub')
-    teach_formset = TeachingFormSet(request.POST or None,   instance=profile, prefix='teach')
-    edu_formset   = EducationFormSet(request.POST or None,  instance=profile, prefix='edu')
-    cl_formset    = ContactLinkFormSet(request.POST or None, instance=profile, prefix='cl')
-
+#get
+    profile_form  = ProfileForm(instance=profile)
+    pub_formset   = PublicationFormSet(instance=profile, prefix='pub')
+    teach_formset = TeachingFormSet(instance=profile, prefix='teach')
+    edu_formset   = EducationFormSet(instance=profile, prefix='edu')
+    cl_formset    = ContactLinkFormSet(instance=profile, prefix='cl')
+#post
     if request.method == 'POST':
+        profile_form  = ProfileForm(request.POST, request.FILES, instance=profile)
+        pub_formset   = PublicationFormSet(request.POST, instance=profile, prefix='pub')
+        teach_formset = TeachingFormSet(request.POST, instance=profile, prefix='teach')
+        edu_formset   = EducationFormSet(request.POST, instance=profile, prefix='edu')
+        cl_formset    = ContactLinkFormSet(request.POST, instance=profile, prefix='cl')
+
         all_valid = (
             profile_form.is_valid()  and
             pub_formset.is_valid()   and
@@ -407,15 +408,12 @@ def edit_profile(request):
         )
         if all_valid:
             profile_form.save()
-            pub_formset.save()    # يضيف + يعدل + يحذف تلقائياً
+            pub_formset.save()
             teach_formset.save()
             edu_formset.save()
             cl_formset.save()
             messages.success(request, 'Profile updated successfully!')
             return redirect('dashboard:main_dashboard')
-
-    publications = Publication.objects.filter(profile=profile)
-    teachings = Teaching.objects.filter(profile=profile)
 
     return render(request, 'dashboard/profile.html', {
         'form'         : profile_form,

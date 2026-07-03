@@ -86,6 +86,7 @@
         <div class="card-body p-4">
             {{ pub_formset.management_form }}
             {% for pub_form in pub_formset %}
+            {% for hidden in pub_form.hidden_fields %}{{ hidden }}{% endfor %}
             <div class="p-3 rounded-3 mb-3 {% if pub_form.instance.pk %}bg-light{% else %}bg-white border{% endif %}">
                 {% if pub_form.instance.pk %}
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -132,6 +133,7 @@
         <div class="card-body p-4">
             {{ teach_formset.management_form }}
             {% for teach_form in teach_formset %}
+            {% for hidden in teach_form.hidden_fields %}{{ hidden }}{% endfor %}
             <div class="p-3 rounded-3 mb-3 {% if teach_form.instance.pk %}bg-light{% else %}bg-white border{% endif %}">
                 {% if teach_form.instance.pk %}
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -174,6 +176,7 @@
         <div class="card-body p-4">
             {{ edu_formset.management_form }}
             {% for edu_form in edu_formset %}
+            {% for hidden in edu_form.hidden_fields %}{{ hidden }}{% endfor %}
             <div class="p-3 rounded-3 mb-3 {% if edu_form.instance.pk %}bg-light{% else %}bg-white border{% endif %}">
                 {% if edu_form.instance.pk %}
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -259,6 +262,7 @@
             </p>
             {{ cl_formset.management_form }}
             {% for cl_form in cl_formset %}
+            {% for hidden in cl_form.hidden_fields %}{{ hidden }}{% endfor %}
             <div class="p-3 rounded-3 mb-3 {% if cl_form.instance.pk %}bg-light{% else %}bg-white border{% endif %}">
                 {% if cl_form.instance.pk %}
                 <div class="d-flex justify-content-between align-items-center mb-2">
