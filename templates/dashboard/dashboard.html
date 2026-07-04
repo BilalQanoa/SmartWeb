@@ -103,7 +103,8 @@
             </thead>
             <tbody>
                 {% for pub in publications %}
-                <tr>
+                <!-- each row gets class="asset-row" and data-title for JS filtering -->
+                 <tr class="asset-row" data-title="{{ pub.title|lower }}">
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <span class="asset-icon text-primary-blue bg-primary bg-opacity-10">
