@@ -21,6 +21,6 @@ urlpatterns = [
     path('teaching/edit/<int:teach_id>/',       views.edit_teaching,      name='edit_teaching'),
     path('teaching/delete/<int:teach_id>/',     views.delete_teaching,    name='delete_teaching'),
     
-    path('search/', views.search_dashboard, name='search_dashboard'),
+    # path('search/', views.search_dashboard, name='search_dashboard'),
 
 ]
