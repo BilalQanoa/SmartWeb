@@ -507,3 +507,31 @@ function refreshPreview() {
     const frame = document.getElementById('preview-frame');
     if (frame) frame.src = frame.src;
 }
+
+
+
+
+    // Filter function — runs every time the user types in the filter input.
+    // Steps:
+    // 1. Get the typed text and convert to lowercase
+    // 2. Loop through every <tr class="asset-row">
+    // 3. Compare the typed text against data-title on each row
+    // 4. Show the row if it matches, hide it if it doesn't
+    // 5. If nothing matches at all, show the "No results found" row
+
+function filterAssets(query) {
+    const q     = query.toLowerCase().trim();  //  the search text
+    const rows  = document.querySelectorAll('.asset-row');  // all table rows
+    const noRes = document.getElementById('no-results');    // the "no results" row
+    let   found = 0;  // counter for how many rows are visible
+
+    rows.forEach(row => {
+        // data-title holds the lowercase title set by Django (e.g. "machine learning 101")
+        const match = !q || row.dataset.title.includes(q);
+        row.style.display = match ? '' : 'none';  // '' = visible, 'none' = hidden
+        if (match) found++;
+    });
+
+    // show "No results" row only when user typed something AND nothing matched
+    noRes.style.display = (q && found === 0) ? '' : 'none';
+}
