@@ -224,13 +224,13 @@ class ContactLinkForm(forms.ModelForm):
 PublicationFormSet = inlineformset_factory(
     Profile, Publication,
     form=PublicationForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 TeachingFormSet = inlineformset_factory(
     Profile, Teaching,
     form=TeachingForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 EducationFormSet = inlineformset_factory(
