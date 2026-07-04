@@ -84,7 +84,10 @@
         </div>
         <div class="topbar-search" style="max-width: 220px;">
             <i class="bi bi-search"></i>
-            <input type="text" placeholder="Filter assets..." class="topbar-search-input">
+            <!-- <input type="text" placeholder="Filter assets..." class="topbar-search-input"> -->
+            <!-- Filter input: typing here calls filterAssets() which hides/shows rows-->
+            <input type="text" id="asset-filter" placeholder="Filter assets..."
+             class="topbar-search-input" oninput="filterAssets(this.value)">
         </div>
     </div>
 
