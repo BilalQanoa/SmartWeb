@@ -89,11 +89,11 @@ Structure:
 }}
 
 CV Text:
-"""
+ 
 {cv_text}
-"""
 
 Return only the JSON object.
+
 """
 
 
