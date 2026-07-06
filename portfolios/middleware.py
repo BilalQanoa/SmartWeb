@@ -8,9 +8,8 @@ ONBOARDING_PATHS = {
     '/portfolios/onboarding-three/',
 }
 
-# Paths that should NOT be blocked even if onboarding is incomplete
 ONBOARDING_EXEMPTIONS = {
-    '/portfolios/preview/',  # Allow preview iframe to load during onboarding
+    '/portfolios/preview/',
 }
 
 class OnboardingMiddleware:
