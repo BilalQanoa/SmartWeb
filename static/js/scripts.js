@@ -601,67 +601,24 @@ function validateEducationSection() {
 function nextSection(idx) {
     if (idx === 2) {
         if (!validateEducationSection()) {
+            console.warn('Education validation failed, staying on section', idx);
             showSection(2);
             return;
         }
     }
-    if (!sectionValid(idx)) return;
-    markDone(idx);
+    if (!sectionValid(idx)) {
+        console.warn('Section validation prevented navigation', idx);
+        return;
+    }
     if (idx + 1 < TOTAL) showSection(idx + 1);
 }
 
 function prevSection(idx) {
-    if (idx > 0) showSection(idx - 1);
-}
-
-function markDone(idx) {
-    const c = document.getElementById('pub-container');
-    if (!c) return;
-    const totalInput = document.querySelector('input[name="publications-TOTAL_FORMS"]');
-    let index = 0;
-    if (totalInput) index = parseInt(totalInput.value, 10);
-    const empty = document.getElementById('pub-empty')?.innerHTML;
-    if (empty) {
-        const html = empty.replace(/__prefix__/g, index);
-        const wrapper = document.createElement('div');
-        wrapper.className = 'pub-row repeatable-card';
-        wrapper.innerHTML = `<div class="repeatable-card-header"><div class="repeatable-card-title">Publication #${c.querySelectorAll('.pub-row').length + 1}</div><button type="button" class="remove-row-btn" onclick="this.closest('.pub-row').remove(); updateStepButtons(); updateRepeatableSectionTitles();"><i class="bi bi-trash"></i></button></div><div class="row g-3">${html}</div>`;
-        c.appendChild(wrapper);
-        if (totalInput) totalInput.value = index + 1;
-        syncValidation();
-        updateRepeatableSectionTitles();
-        return;
+    if (idx > 0) {
+        showSection(idx - 1);
     }
-
-    const div = document.createElement('div');
-    div.className = 'pub-row';
-    div.id = 'pub-' + pubCount;
-    div.innerHTML = `
-        <button type="button" class="remove-row-btn" onclick="this.closest('.pub-row').remove(); updateStepButtons();"><i class="bi bi-trash"></i></button>
-        <div class="row g-3">
-            <div class="col-md-8">
-                <label class="form-label fw-semibold small">Title <span class="text-danger">*</span></label>
-                <input type="text" name="pub_title[]" class="form-control pub-required" placeholder="Publication title">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-semibold small">Date</label>
-                <input type="date" name="pub_date[]" class="form-control">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold small">PDF Link</label>
-                <input type="url" name="pub_pdf[]" class="form-control" placeholder="https://...">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold small">GitHub Link</label>
-                <input type="url" name="pub_github[]" class="form-control" placeholder="https://github.com/...">
-            </div>
-        </div>`;
-    c.appendChild(div);
-    pubCount++;
-    syncValidation();
-    continueBtn.disabled = !allDone;
-    continueBtn.setAttribute('aria-disabled', allDone ? 'false' : 'true');
 }
+
 
 function getSectionRequiredFields(section) {
     return section.querySelectorAll('input[required], textarea[required], select[required]');
@@ -732,6 +689,24 @@ function setSectionDone(idx, done) {
     checkAllDone();
 }
 
+function updateProgress() {
+    const completionPct = document.getElementById('completion-pct');
+    const completionBar = document.getElementById('completion-bar');
+    const totalSteps = TOTAL || document.querySelectorAll('.sidebar-step').length || 0;
+    if (!completionPct || !completionBar || totalSteps === 0) return;
+
+    const completedSteps = sectionDone.filter(Boolean).length;
+    const percent = Math.round((completedSteps / totalSteps) * 100);
+
+    completionPct.textContent = `${percent}% complete`;
+    completionBar.style.width = `${percent}%`;
+    completionBar.setAttribute('aria-valuenow', percent);
+}
+
+function checkAllDone() {
+    return sectionDone.length > 0 && sectionDone.every(Boolean);
+}
+
 function updateFinalContactState() {
     const submitBtn = document.getElementById('go-step3-btn');
     if (submitBtn) {
@@ -740,24 +715,21 @@ function updateFinalContactState() {
     checkAllDone();
 }
 
+function handleWizardFieldChange(event) {
+    const el = event.target;
+    if (el.type !== 'checkbox' && el.type !== 'radio' && el.value && String(el.value).trim()) {
+        el.classList.remove('is-invalid');
+    }
+    updateStepButtons();
+    updateFinalContactState();
+}
+
 function syncValidation() {
-    document.querySelectorAll('input[required], textarea[required]').forEach(el => {
-        el.removeEventListener('input', updateStepButtons);
-        el.removeEventListener('change', updateStepButtons);
-        el.addEventListener('input', () => {
-            if (el.value.trim()) {
-                el.classList.remove('is-invalid');
-            }
-            updateStepButtons();
-            updateFinalContactState();
-        });
-        el.addEventListener('change', () => {
-            if (el.value.trim()) {
-                el.classList.remove('is-invalid');
-            }
-            updateStepButtons();
-            updateFinalContactState();
-        });
+    document.querySelectorAll('.wizard-section input, .wizard-section textarea, .wizard-section select').forEach(el => {
+        el.removeEventListener('input', handleWizardFieldChange);
+        el.removeEventListener('change', handleWizardFieldChange);
+        el.addEventListener('input', handleWizardFieldChange);
+        el.addEventListener('change', handleWizardFieldChange);
     });
 
     document.querySelectorAll('input[name="google_scholar"], input[name="research_gate"]').forEach(el => {

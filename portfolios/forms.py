@@ -51,7 +51,7 @@ class ProfileForm(forms.ModelForm):
             'bio': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 4,
-                'placeholder': 'Write a short academic biography...'
+                'placeholder': 'Write a short academic biography...',
             }),
             'profile_image': forms.FileInput(attrs={
                 'class': 'form-control d-none',
@@ -79,7 +79,7 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name in ['full_name', 'academic_title', 'institution', 'field_of_study', 'bio']:
+        for field_name in ['full_name', 'academic_title', 'institution', 'field_of_study']:
             if field_name in self.fields:
                 self.fields[field_name].required = True
 
