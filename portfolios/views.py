@@ -76,6 +76,8 @@ def get_profile(user):
 
 
 def onboarding_one(request):
+    if 'user_id' not in request.session:
+        return redirect('accounts:login')
     return render(request, 'onboarding/onboarding1.html')
 
 
@@ -325,6 +327,7 @@ def onboarding_three(request):
         if theme:
             profile.theme = theme
             profile.selected_template = theme_slug  # keeps existing choice field in sync
+            profile.onboarding_completed = True
             profile.save()
             return redirect('dashboard:main_dashboard')
 
