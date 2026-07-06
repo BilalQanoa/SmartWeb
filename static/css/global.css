@@ -42,6 +42,28 @@ h6 {
     color: white;
 }
 
+.btn-outline-secondary,
+.btn-secondary {
+    color: #2D1B69 !important;
+    background-color: #ffffff !important;
+    border-color: #DDD6FE !important;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active,
+.btn-outline-secondary.active,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active {
+    color: #2D1B69 !important;
+    background-color: #EDE9FE !important;
+    border-color: #C4B5FD !important;
+    box-shadow: none;
+}
+
 .hero-section {
     background: linear-gradient(135deg, #f8faff 0%, #f0f5ff 100%);
     padding: 6rem 0;
