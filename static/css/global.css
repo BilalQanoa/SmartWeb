@@ -64,6 +64,118 @@ h6 {
     box-shadow: none;
 }
 
+.publication-card {
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(45, 27, 105, 0.08);
+    overflow: hidden;
+}
+
+.publication-card-header {
+    background: linear-gradient(135deg, #2D1B69 0%, #4C1D95 100%);
+    color: #ffffff;
+    border-bottom: none;
+}
+
+.publication-card-header h4 {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.publication-card-subtitle {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.9rem;
+    opacity: 1;
+}
+
+.dashboard-body .container.py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 2rem !important;
+}
+
+.publication-icon-badge {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.publication-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.publication-section {
+    padding: 1.25rem 1.3rem;
+    border: 1px solid #F1EAFD;
+    border-radius: 14px;
+    background: #FCFBFF;
+}
+
+.publication-section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2D1B69;
+    margin-bottom: 0.2rem;
+}
+
+.publication-section-subtitle {
+    font-size: 0.82rem;
+    color: #6B7280;
+    margin-bottom: 1rem;
+}
+
+.publication-field .form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.45rem;
+}
+
+.publication-input-wrapper {
+    position: relative;
+}
+
+.publication-input-wrapper .bi {
+    left: 0.9rem;
+    color: #7C3AED;
+}
+
+.publication-input-wrapper .form-control,
+.publication-input-wrapper textarea {
+    padding-left: 2.6rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #E5E7EB;
+    background-color: #ffffff;
+}
+
+.publication-input-wrapper .form-control:focus,
+.publication-input-wrapper textarea:focus {
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.16);
+}
+
+.publication-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    margin-top: 0.25rem;
+    border-top: 1px solid #E5E7EB;
+}
+
+.publication-actions .btn-primary-custom {
+    min-width: 150px;
+}
+
 .hero-section {
     background: linear-gradient(135deg, #f8faff 0%, #f0f5ff 100%);
     padding: 6rem 0;
