@@ -1,6 +1,6 @@
 :root {
-    --primary-blue: #1d4ed8;
-    --primary-blue-hover: #1e40af;
+    --primary-blue: #2D1B69;
+    --primary-blue-hover: #24124f;
     --dark-bg: #1e293b;
     --light-bg: #f8fafc;
 }
@@ -1224,7 +1224,7 @@ h6 {
     align-items: center;
     gap: 0.5rem;
     font-weight: 700;
-    color: var(--primary-blue);
+    color: #2D1B69;
     text-decoration: none;
     font-size: 1.25rem;
 }
@@ -1249,7 +1249,7 @@ h6 {
 }
 
 .step-item.active {
-    color: var(--primary-blue);
+    color: #2D1B69;
 }
 
 .step-circle {
@@ -1264,7 +1264,7 @@ h6 {
 }
 
 .step-item.active .step-circle {
-    background-color: var(--primary-blue);
+    background-color: #2D1B69;
     color: #ffffff;
 }
 
@@ -1279,6 +1279,16 @@ h6 {
     align-items: center;
     gap: 1rem;
     color: #475569;
+}
+
+.steps-wrapper .btn-primary,
+.steps-wrapper .btn-primary:hover,
+.steps-wrapper .btn-primary:focus,
+.steps-wrapper .btn-primary:active {
+    background-color: #2D1B69;
+    border-color: #2D1B69;
+    color: #ffffff;
+    box-shadow: none;
 }
 
 .steps-help-icon {
@@ -1345,15 +1355,20 @@ h6 {
     border-color: #cbd5e1;
 }
 
+.wizard-card:first-child {
+    border-color: #7C3AED;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.12);
+}
+
 .wizard-card-recommended-badge {
     position: absolute;
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--primary-blue);
-    color: white;
+    background-color: #FBBF24;
+    color: #2D1B69;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     padding: 4px 16px;
     border-radius: 20px;
 }
@@ -1361,8 +1376,8 @@ h6 {
 .wizard-card-icon {
     width: 48px;
     height: 48px;
-    background-color: #eff6ff;
-    color: var(--primary-blue);
+    background-color: #F5F3FF;
+    color: #7C3AED;
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
@@ -1387,9 +1402,9 @@ h6 {
 }
 
 .wizard-card-dropzone {
-    border: 2px dashed #cbd5e1;
+    border: 2px dashed #DDD6FE;
     border-radius: 0.75rem;
-    background-color: #f8fafc;
+    background-color: #FAF5FF;
     padding: 2rem;
     text-align: center;
     color: #64748b;
@@ -1405,11 +1420,12 @@ h6 {
 
 .wizard-card-dropzone i {
     font-size: 1.5rem;
+    color: #7C3AED;
 }
 
 .wizard-card-scanning {
     border-radius: 0.75rem;
-    background-color: #0d6efd;
+    background-color: #2D1B69;
     color: #ffffff;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -1488,8 +1504,8 @@ h6 {
 }
 
 .wizard-tag-primary {
-    background-color: #eff6ff;
-    color: var(--primary-blue);
+    background-color: #EDE9FE;
+    color: #7C3AED;
 }
 
 .wizard-card-skeleton {
@@ -1512,7 +1528,7 @@ h6 {
 
 .wizard-continue-btn {
     margin-top: 4rem;
-    background-color: #93c5fd;
+    background-color: #2D1B69;
     color: white;
     border: none;
     border-radius: 2rem;
@@ -1525,12 +1541,12 @@ h6 {
 }
 
 .wizard-continue-btn:hover {
-    background-color: #60a5fa;
+    background-color: #24124f;
     color: white;
 }
 
 .wizard-continue-btn.active {
-    background-color: #93c5fd;
+    background-color: #2D1B69;
     color: white;
 }
 
@@ -1567,31 +1583,31 @@ h6 {
 }
 
 .wizard-card.selected {
-    border: 2px solid #1d4ed8;
-    box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12);
+    border: 2px solid #7C3AED;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
 }
 
 .wizard-continue-btn.disabled-btn {
-    background-color: #93c5fd;
-    opacity: 0.6;
+    background-color: #2D1B69;
+    opacity: 0.7;
     pointer-events: none;
     cursor: not-allowed;
 }
 
 .wizard-continue-btn.enabled-btn {
-    background-color: #1d4ed8;
+    background-color: #2D1B69;
     opacity: 1;
     pointer-events: auto;
     cursor: pointer;
 }
 
 .wizard-continue-btn.enabled-btn:hover {
-    background-color: #1e40af;
+    background-color: #24124f;
 }
 
 .wizard-card-icon-manual {
-    background-color: #f1f5f9;
-    color: #64748b;
+    background-color: #F5F3FF;
+    color: #7C3AED;
 }
 
 .w-60 {
@@ -1641,8 +1657,8 @@ h6 {
 }
 
 .tracker-item.active-section {
-    color: #1d4ed8;
-    background: #eff6ff;
+    color: #2D1B69;
+    background: #F5F3FF;
 }
 
 .tracker-dot {
@@ -1692,7 +1708,7 @@ h6 {
 }
 
 .photo-upload-circle:hover {
-    border-color: #1d4ed8;
+    border-color: #7C3AED;
 }
 
 .photo-upload-circle img {
@@ -1717,8 +1733,8 @@ h6 {
 }
 
 .tag-item {
-    background: #eff6ff;
-    color: #1d4ed8;
+    background: #F5F3FF;
+    color: #7C3AED;
     border-radius: 20px;
     padding: .2rem .75rem;
     font-size: .8rem;
@@ -1772,8 +1788,8 @@ h6 {
 }
 
 .add-row-btn {
-    border: 1.5px dashed #1d4ed8;
-    color: #1d4ed8;
+    border: 1.5px dashed #7C3AED;
+    color: #7C3AED;
     background: transparent;
     border-radius: .5rem;
     padding: .5rem 1.25rem;
@@ -1785,7 +1801,7 @@ h6 {
 }
 
 .add-row-btn:hover {
-    background: #eff6ff;
+    background: #F5F3FF;
 }
 
 .step2-submit-btn {
@@ -1794,16 +1810,16 @@ h6 {
     font-weight: 700;
     font-size: 1rem;
     border: none;
-    background: #93c5fd;
+    background: #2D1B69;
     color: #fff;
     transition: background .2s;
 }
 
 .step2-submit-btn:not(:disabled) {
-    background: #1d4ed8;
+    background: #2D1B69;
     cursor: pointer;
 }
 
 .step2-submit-btn:not(:disabled):hover {
-    background: #1e40af;
+    background: #24124f;
 }
