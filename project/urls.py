@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -10,6 +9,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('portfolios/', include('portfolios.urls')),
+    path("assistant/", include("assistant.urls")),
 ]
 
 if settings.DEBUG:
