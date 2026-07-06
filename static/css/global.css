@@ -182,6 +182,31 @@ h6 {
     border-color: #DDD6FE !important;
 }
 
+.profile-page-shell {
+    padding-top: 0.75rem !important;
+    padding-bottom: 1.25rem;
+}
+
+.profile-section-card {
+    border-radius: 14px;
+    border: 1px solid #F1EAFD;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+.profile-section-header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #F1EAFD;
+}
+
+.profile-section-header .fw-bold {
+    color: #2D1B69;
+}
+
+.profile-section-header .bi {
+    color: #7C3AED;
+}
+
 .course-page-shell {
     padding-top: 0.75rem !important;
     padding-bottom: 1.25rem;
