@@ -28,6 +28,9 @@ class OnboardingMiddleware:
         if path.startswith('/static/') or path.startswith('/media/'):
             return self.get_response(request)
 
+        if path.startswith('/api/'):
+            return self.get_response(request)
+
         if path.startswith('/accounts/login') or path.startswith('/accounts/register') or path.startswith('/accounts/logout'):
             return self.get_response(request)
 

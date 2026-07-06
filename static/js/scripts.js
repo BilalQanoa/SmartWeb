@@ -460,10 +460,22 @@ async function uploadCvFile(file) {
             credentials: 'same-origin',
             headers: csrftoken ? { 'X-CSRFToken': csrftoken } : {},
         });
+
+        const contentType = (response.headers.get('content-type') || '').toLowerCase();
         if (!response.ok) {
-            const payload = await response.json().catch(() => null);
-            throw new Error(payload?.error || 'Upload failed.');
+            if (contentType.includes('application/json')) {
+                const payload = await response.json().catch(() => null);
+                throw new Error(payload?.error || 'Upload failed.');
+            }
+            const text = await response.text().catch(() => null);
+            throw new Error(text ? 'Upload failed: server returned an unexpected response.' : 'Upload failed.');
         }
+
+        if (!contentType.includes('application/json')) {
+            const text = await response.text().catch(() => null);
+            throw new Error('Server error: expected JSON response.');
+        }
+
         const data = await response.json();
         if (data.task_id) {
             pollCvStatus(data.task_id);

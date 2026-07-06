@@ -16,9 +16,10 @@ from types import SimpleNamespace
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db import OperationalError
-from django.http import JsonResponse, Http404, HttpResponseBadRequest
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.urls import reverse
 
 from accounts.models import User
@@ -75,6 +76,7 @@ def get_profile(user):
     return profile
 
 
+@ensure_csrf_cookie
 def onboarding_one(request):
     if 'user_id' not in request.session:
         return redirect('accounts:login')
@@ -117,7 +119,7 @@ def _start_cv_task(profile, file_obj, filename):
 
 def upload_cv(request):
     if request.method != 'POST':
-        return HttpResponseBadRequest('Only POST supported.')
+        return JsonResponse({'error': 'Only POST supported.'}, status=405)
     if 'user_id' not in request.session:
         return JsonResponse({'error': 'Authentication required.'}, status=401)
     if 'cv_file' not in request.FILES:
@@ -145,7 +147,11 @@ def upload_cv(request):
                 status=400,
             )
 
-    user = get_current_user(request)
+    try:
+        user = get_current_user(request)
+    except Exception:
+        return JsonResponse({'error': 'Invalid session or user not found.'}, status=401)
+
     profile = get_profile(user)
     if profile is None:
         return JsonResponse({'error': 'User profile not found.'}, status=404)
