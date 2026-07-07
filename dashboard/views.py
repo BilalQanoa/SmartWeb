@@ -422,36 +422,4 @@ def edit_profile(request):
     })
 
 
-# def search_dashboard(request):
-#     query = request.GET.get('q', '')
-    
-#     _, profile = get_user_and_profile(request) 
-
-#     results = {
-#         'publications': [],
-#         'teaching': [],
-#         'education': [],
-#     }
-    
-#     if query:
-#         # restrict search to the user's profile only
-#         results['publications'] = Publication.objects.filter(
-#             profile=profile, 
-#             title__icontains=query
-#         )
-        
-#         results['teaching'] = Teaching.objects.filter(
-#             profile=profile, 
-#             course_name__icontains=query
-#         )
-        
-#         results['education'] = Education.objects.filter(
-#             profile=profile, 
-#             degree__icontains=query
-#         )
-
-#     return render(request, 'dashboard/dashboard.html', {
-#         'results': results,
-#         'query': query,
-#         'profile': profile 
-#     })
+ 
