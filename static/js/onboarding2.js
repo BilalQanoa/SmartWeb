@@ -1,62 +1,10 @@
+// Onboarding step 2: multi-step wizard, repeatable formsets, validation
 
-// ── ONBOARDING 1: WIZARD CARD SELECTION ─────────────────────────────────────
-function selectCard(card) {
-    document.querySelectorAll('.wizard-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-
-    const btn = document.getElementById('continue-btn');
-    if (btn) {
-        btn.classList.remove('disabled-btn');
-        btn.classList.add('enabled-btn');
-    }
-}
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-}
-
-function showCvScanning(message) {
-    document.getElementById('cv-dropzone')?.classList.add('d-none');
-    document.getElementById('cv-scanning')?.classList.remove('d-none');
-    const msg = document.getElementById('cv-scan-message');
-    if (msg) msg.textContent = message;
-}
-
-function hideCvScanning() {
-    document.getElementById('cv-dropzone')?.classList.remove('d-none');
-    document.getElementById('cv-scanning')?.classList.add('d-none');
-    document.getElementById('cv-scan-error')?.classList.add('d-none');
-    document.getElementById('cv-retry-btn')?.classList.add('d-none');
-}
-
-function setCvError(message) {
-    const errorBox = document.getElementById('cv-scan-error');
-    if (errorBox) {
-        errorBox.textContent = message;
-        errorBox.classList.remove('d-none');
-    }
-    const retry = document.getElementById('cv-retry-btn');
-    if (retry) retry.classList.remove('d-none');
-}
-
-function showAutoFillToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'position-fixed bottom-0 end-0 m-4 p-3 rounded-3 bg-success text-white shadow';
-    toast.style.zIndex = '9999';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 5000);
-}
-
-function setFormValue(selector, value) {
-    const el = document.querySelector(selector);
-    if (!el || value == null) return;
-    el.value = value;
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-}
+let TOTAL = 0;
+let sectionDone = [];
+let current = 0;
+let pubCount = 1;
+let courseCount = 1;
 
 function updateRepeatableSectionTitles() {
     document.querySelectorAll('.edu-row').forEach((row, index) => {
@@ -140,7 +88,6 @@ function addTeachingRow(item = {}) {
 function addEducationRow(item = {}) {
     const c = document.getElementById('edu-container');
     if (!c) return;
-    // try to use the empty form template if present
     const empty = document.getElementById('edu-empty')?.innerHTML;
     const totalInput = document.querySelector('input[name*="education"][name$="-TOTAL_FORMS"]');
     let index = 0;
@@ -268,7 +215,6 @@ function initializeOnboarding2FromSession() {
     }
 
     if (Array.isArray(extracted.education) && extracted.education.length) {
-        // try to populate existing formset fields (Django formset names) or fall back to addEducationRow
         const degreeInputs = document.querySelectorAll('input[name$="-degree"]');
         if (degreeInputs && degreeInputs.length) {
             extracted.education.forEach((item, idx) => {
@@ -316,138 +262,6 @@ function initializeOnboarding2FromSession() {
 
     showAutoFillToast(`Auto-filled ${filledCount} fields ✅`);
 }
-
-function pollCvStatus(taskId) {
-    const messages = [
-        'Extracting your skills...',
-        'Extracting publications...',
-        'Analyzing academic background...',
-        'Auto-filling your data...'
-    ];
-    let index = 0;
-    const interval = setInterval(async () => {
-        showCvScanning(messages[index % messages.length]);
-        index += 1;
-        try {
-            const response = await fetch(`/api/onboarding/cv-status/${taskId}/`, {
-                credentials: 'same-origin',
-            });
-            if (!response.ok) {
-                throw new Error('Failed to connect to the server');
-            }
-            const result = await response.json();
-            if (result.status === 'completed') {
-                clearInterval(interval);
-                sessionStorage.setItem('cv_extracted_data', JSON.stringify(result.data));
-                window.location.href = '/portfolios/onboarding-two/';
-                return;
-            }
-            if (result.status === 'failed') {
-                clearInterval(interval);
-                setCvError(result.error || 'Failed to analyze the file. Please try again.');
-            }
-        } catch (err) {
-            clearInterval(interval);
-            setCvError(err.message || 'Failed to connect to the analysis server.');
-        }
-    }, 1500);
-}
-
-async function uploadCvFile(file) {
-    if (!file) return;
-    const allowed = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (!allowed.includes(file.type) && !file.name.toLowerCase().endsWith('.docx')) {
-        setCvError('Unsupported file type. Please upload PDF or DOCX.');
-        return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-        setCvError('File size exceeds 10MB.');
-        return;
-    }
-    showCvScanning('Uploading the file to the server...');
-    const formData = new FormData();
-    formData.append('cv_file', file);
-    try {
-        const csrftoken = getCookie('csrftoken');
-        const response = await fetch('/api/onboarding/upload-cv/', {
-            method: 'POST',
-            body: formData,
-            credentials: 'same-origin',
-            headers: csrftoken ? { 'X-CSRFToken': csrftoken } : {},
-        });
-
-        const contentType = (response.headers.get('content-type') || '').toLowerCase();
-        if (!response.ok) {
-            if (contentType.includes('application/json')) {
-                const payload = await response.json().catch(() => null);
-                throw new Error(payload?.error || 'Upload failed.');
-            }
-            const text = await response.text().catch(() => null);
-            throw new Error(text ? 'Upload failed: server returned an unexpected response.' : 'Upload failed.');
-        }
-
-        if (!contentType.includes('application/json')) {
-            const text = await response.text().catch(() => null);
-            throw new Error('Server error: expected JSON response.');
-        }
-
-        const data = await response.json();
-        if (data.task_id) {
-            pollCvStatus(data.task_id);
-        } else {
-            throw new Error('No task ID received.');
-        }
-    } catch (err) {
-        setCvError(err.message || 'An error occurred during upload.');
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const wizardCards = document.querySelectorAll('.wizard-card');
-    wizardCards.forEach(card => {
-        card.addEventListener('click', function () {
-            selectCard(this);
-        });
-    });
-
-    const dropzone = document.getElementById('cv-dropzone');
-    const fileInput = document.getElementById('cv-file-input');
-    const retryButton = document.getElementById('cv-retry-btn');
-    if (dropzone) {
-        dropzone.addEventListener('click', () => fileInput?.click());
-        dropzone.addEventListener('dragover', event => {
-            event.preventDefault();
-            dropzone.classList.add('drag-over');
-        });
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('drag-over');
-        });
-        dropzone.addEventListener('drop', event => {
-            event.preventDefault();
-            dropzone.classList.remove('drag-over');
-            const file = event.dataTransfer.files[0];
-            if (file) uploadCvFile(file);
-        });
-    }
-    if (fileInput) {
-        fileInput.addEventListener('change', () => {
-            const file = fileInput.files?.[0];
-            if (file) uploadCvFile(file);
-        });
-    }
-    if (retryButton) {
-        retryButton.addEventListener('click', () => {
-            document.getElementById('cv-scan-error')?.classList.add('d-none');
-            hideCvScanning();
-        });
-    }
-});
-
-
-// ── ONBOARDING 2: MULTI-STEP WIZARD ─────────────────────────────────────────
-let TOTAL = 0;
-let sectionDone = [];
-let current = 0;
 
 function showSection(idx) {
     document.querySelectorAll('.wizard-section').forEach((el, i) => {
@@ -545,7 +359,6 @@ function prevSection(idx) {
         showSection(idx - 1);
     }
 }
-
 
 function getSectionRequiredFields(section) {
     return section.querySelectorAll('input[required], textarea[required], select[required]');
@@ -673,32 +486,7 @@ function syncValidation() {
     });
 }
 
-
-// ── ONBOARDING 2: TAG INPUT (Research Interests) ─────────────────────────────
-let tags = [];
-
-function renderTags() {
-    const tagBox = document.getElementById('tag-box');
-    const tagInput = document.getElementById('tag-input');
-    const tagVal = document.getElementById('research-interests-val');
-    if (!tagBox || !tagInput || !tagVal) return;
-
-    tagBox.querySelectorAll('.tag-item').forEach(el => el.remove());
-    tags.forEach((t, i) => {
-        const span = document.createElement('span');
-        span.className = 'tag-item';
-        span.innerHTML = t + ' <span class="remove-tag" onclick="removeTag(' + i + ')">×</span>';
-        tagBox.insertBefore(span, tagInput);
-    });
-    tagVal.value = tags.join(',');
-    updateStepButtons();
-}
-
-function removeTag(i) {
-    tags.splice(i, 1);
-    renderTags();
-}
-
+// Tag input and other DOM bindings for onboarding2
 document.addEventListener("DOMContentLoaded", () => {
     // Tag input listener
     const tagInput = document.getElementById('tag-input');
@@ -806,9 +594,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-// ── ONBOARDING 2: ADD PUBLICATION ROW ────────────────────────────────────────
-let pubCount = 1;
 function addPub() {
     const c = document.getElementById('pub-container');
     if (!c) return;
@@ -840,9 +625,6 @@ function addPub() {
     syncValidation();
 }
 
-
-// ── ONBOARDING 2: ADD COURSE ROW ─────────────────────────────────────────────
-let courseCount = 1;
 function addCourse() {
     const c = document.getElementById('teach-container');
     if (!c) return;
@@ -888,89 +670,4 @@ function addCourse() {
     c.appendChild(div);
     courseCount++;
     syncValidation();
-}
-
-
-// ── ONBOARDING 3: TEMPLATE PREVIEW ──────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById('template-selection-form');
-    if (!form) return; // only run on onboarding step 3
-
-    const cards = document.querySelectorAll(".template-card");
-    const previewTitle = document.getElementById("preview-title");
-    const openNewTabBtn = document.getElementById("open-new-tab-btn");
-    const selectedInput = document.getElementById("selected-template-input");
-    const urlText = document.getElementById("preview-url-text");
-    const frame = document.getElementById('preview-frame');
-
-    function activate(card) {
-        const slug = card.dataset.template;
-        if (!slug) return;
-
-        cards.forEach(c => {
-            c.classList.remove("active");
-            c.querySelector(".template-badge-primary")?.remove();
-        });
-        card.classList.add("active");
-
-        const titleDiv = card.querySelector(".d-flex.align-items-center");
-        if (titleDiv) {
-            const badge = document.createElement("span");
-            badge.className = "template-badge-primary ms-2";
-            badge.textContent = "ACTIVE";
-            titleDiv.appendChild(badge);
-        }
-
-        if (selectedInput) selectedInput.value = slug;
-
-        const previewUrl = `/portfolios/preview/${slug}/`;
-        const label = card.querySelector('h6')?.textContent || slug;
-
-        if (previewTitle) previewTitle.textContent = label;
-        if (openNewTabBtn) openNewTabBtn.href = previewUrl;
-        if (urlText) urlText.textContent = `preview.smartweb.io/${slug}`;
-
-        if (frame) {
-            frame.style.display = 'block';
-            frame.src = previewUrl;
-        }
-    }
-
-    cards.forEach(card => card.addEventListener("click", () => activate(card)));
-
-    const initial = document.querySelector('.template-card.active') || cards[0];
-    if (initial) activate(initial);
-});
-
-function refreshPreview() {
-    const frame = document.getElementById('preview-frame');
-    if (frame) frame.src = frame.src;
-}
-
-
-
-
-// Filter function — runs every time the user types in the filter input.
-// Steps:
-// 1. Get the typed text and convert to lowercase
-// 2. Loop through every <tr class="asset-row">
-// 3. Compare the typed text against data-title on each row
-// 4. Show the row if it matches, hide it if it doesn't
-// 5. If nothing matches at all, show the "No results found" row
-
-function filterAssets(query) {
-    const q = query.toLowerCase().trim();  //  the search text
-    const rows = document.querySelectorAll('.asset-row');  // all table rows
-    const noRes = document.getElementById('no-results');    // the "no results" row
-    let found = 0;  // counter for how many rows are visible
-
-    rows.forEach(row => {
-        // data-title holds the lowercase title set  ("machine learning 101")
-        const match = !q || row.dataset.title.includes(q);
-        row.style.display = match ? '' : 'none';  // '' = visible, 'none' = hidden
-        if (match) found++;
-    });
-
-    // show "No results" row only when user typed something AND nothing matched
-    noRes.style.display = (q && found === 0) ? '' : 'none';
 }
