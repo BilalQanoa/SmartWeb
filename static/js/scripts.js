@@ -574,13 +574,19 @@ function updateStepButtons() {
     });
 }
 
+function isFormsetInternalHiddenInput(el) {
+    if (el.type !== 'hidden' || !el.name) return false;
+    if (el.name.indexOf('TOTAL_FORMS') !== -1 || el.name.indexOf('INITIAL_FORMS') !== -1 || el.name.indexOf('MIN_NUM_FORMS') !== -1 || el.name.indexOf('MAX_NUM_FORMS') !== -1 || el.name.indexOf('__prefix__') !== -1) return true;
+    return /-(id|profile)$/.test(el.name);
+}
+
 function sectionHasContent(section) {
     if (!section) return false;
     const inputs = section.querySelectorAll('input, textarea, select');
     for (const el of inputs) {
         if (!el.name) continue;
-        // skip management/formset hidden inputs
-        if (el.type === 'hidden' && (el.name.indexOf('TOTAL_FORMS') !== -1 || el.name.indexOf('INITIAL_FORMS') !== -1 || el.name.indexOf('__prefix__') !== -1)) continue;
+        // skip management/formset hidden inputs and internal formset metadata fields
+        if (isFormsetInternalHiddenInput(el)) continue;
         if (el.type === 'checkbox' || el.type === 'radio') {
             if (el.checked) return true;
             continue;

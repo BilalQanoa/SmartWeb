@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -12,6 +11,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('portfolios/', include('portfolios.urls')),
+    path("assistant/", include("assistant.urls")),
     path('api/onboarding/upload-cv/', portfolios_views.upload_cv, name='upload_cv'),
     path('api/onboarding/cv-status/<str:task_id>/', portfolios_views.cv_status, name='cv_status'),
 ]

@@ -71,8 +71,9 @@
             <div>
                 <h3 class="fw-bold mb-2">Live Preview</h3>
                 <p class="text-secondary mb-0" id="preview-title">
-    {% if active_theme %}{{ active_theme.name }} &mdash; Version {{ active_theme.palette.version|default:"1.0" }}{% else %}No theme selected{% endif %}
-</p>
+                    {% if active_theme %}{{ active_theme.name }} &mdash; Version {{
+                    active_theme.palette.version|default:"1.0" }}{% else %}No theme selected{% endif %}
+                </p>
             </div>
             <div class="d-flex gap-2">
                 <button class="btn btn-primary btn-sm preview-device-btn" aria-label="Desktop view"><i
@@ -94,7 +95,7 @@
                     <span class="browser-dot dot-green"></span>
                 </div>
                 <div
-                    class="browser-url-bar d-flex align-items-center justify-content-center flex-grow-1 mx-3 rounded-2 px-3 py-1">
+                        class="browser-url-bar d-flex align-items-center justify-content-center flex-grow-1 mx-3 rounded-2 px-3 py-1">
                     <i class="bi bi-lock-fill text-secondary me-2 small"></i>
                     <span class="text-secondary small" id="preview-url-text">
                         preview.smartweb.io/{{ active_theme.slug|default:"none" }}
@@ -106,14 +107,17 @@
                 </div>
             </div>
 
-            <!-- Browser Body: now an iframe loading the real preview -->
+            <!-- Browser Body: iframe at tablet width -->
             {% if preview_url %}
-            <iframe id="preview-frame"
-                    src="{{ preview_url }}"
-                    class="browser-body bg-white border-0 w-100"
-                    style="height: 450px; display: block;"
-                    title="Portfolio preview">
-            </iframe>
+            <div class="preview-wrapper d-flex justify-content-center bg-light py-3"
+                 style="overflow: auto;">
+                <iframe id="preview-frame"
+                        src="{{ preview_url }}"
+                        class="browser-body bg-white border-0"
+                        style="width: 768px; height: 1024px; display: block;"
+                        title="Portfolio preview">
+                </iframe>
+            </div>
             {% else %}
             <div class="browser-body bg-white p-5 text-center text-secondary" style="height: 450px;">
                 <i class="bi bi-eye-slash" style="font-size: 2rem;"></i>

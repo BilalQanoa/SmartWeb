@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'accounts',
     'dashboard',
     'portfolios',
+    'assistant'
 ]
 
 MIDDLEWARE = [

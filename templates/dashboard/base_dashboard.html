@@ -43,14 +43,18 @@
                 <span>Profile</span>
             </a>
             <a href="{% url 'dashboard:templates_dashboard' %}"
-                class="sidebar-link {% block nav_templates %}{% endblock %}">
+               class="sidebar-link {% block nav_templates %}{% endblock %}">
                 <i class="bi bi-journal-text"></i>
                 <span>Templates</span>
             </a>
             <a href="{% url 'dashboard:setting_dashboard' %}"
-                class="sidebar-link {% block nav_settings %}{% endblock %}">
+               class="sidebar-link {% block nav_settings %}{% endblock %}">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
+            </a>
+            <a href="{% url 'assistant:review' %}" class="sidebar-link {% block nav_assistant %}{% endblock %}">
+                <i class="bi bi-stars"></i>
+                <span>AI Assistant</span>
             </a>
         </nav>
 
@@ -77,12 +81,12 @@
                 <i class="bi bi-search"></i>
                 <input type="search" placeholder="Search publications, tools, or papers..." class="topbar-search-input">
             </div> -->
-         <!--searchtop with search-->
-        <div class="topbar-search">
-        <i class="bi bi-search"></i>
-        <input type="search" id="global-search" placeholder="Search publications, tools, or papers..."
-            class="topbar-search-input" oninput="filterAssets(this.value)">
-        </div>
+            <!--searchtop with search-->
+            <div class="topbar-search">
+                <i class="bi bi-search"></i>
+                <input type="search" id="global-search" placeholder="Search publications, tools, or papers..."
+                       class="topbar-search-input" oninput="filterAssets(this.value)">
+            </div>
 
             <div class="topbar-actions">
                 <button class="topbar-bell">
@@ -90,7 +94,7 @@
                     <span class="topbar-bell-dot"></span>
                 </button>
                 <a href="{% url 'dashboard:setting_dashboard' %}"
-                    class="topbar-bell ms-1 d-inline-flex align-items-center justify-content-center text-decoration-none">
+                   class="topbar-bell ms-1 d-inline-flex align-items-center justify-content-center text-decoration-none">
                     <i class="bi bi-gear"></i>
                 </a>
             </div>
@@ -102,15 +106,15 @@
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
                 {% for message in messages %}
                 <div class="toast align-items-center border-0 show mb-2 {% if message.tags == 'success' %}bg-success{% else %}bg-danger{% endif %} text-white"
-                    role="alert">
+                     role="alert">
                     <div class="d-flex">
                         <div class="toast-body fw-medium">
                             <i
-                                class="bi {% if message.tags == 'success' %}bi-check-circle{% else %}bi-exclamation-triangle{% endif %} me-2"></i>
+                                    class="bi {% if message.tags == 'success' %}bi-check-circle{% else %}bi-exclamation-triangle{% endif %} me-2"></i>
                             {{ message }}
                         </div>
                         <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                            data-bs-dismiss="toast"></button>
+                                data-bs-dismiss="toast"></button>
                     </div>
                 </div>
                 {% endfor %}
