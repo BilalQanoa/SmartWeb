@@ -283,9 +283,6 @@ def delete_teaching(request, teach_id):
     next_url = request.GET.get('next', '')
     if next_url.startswith('/'):
         return redirect(next_url)
-    # next_url = request.GET.get('next', '')
-    # if next_url.startswith('/'):
-    #     return redirect(next_url)
     return redirect('dashboard:main_dashboard')
 
 
