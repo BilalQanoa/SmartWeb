@@ -99,7 +99,7 @@
                     </div>
                     <div class="card-body p-4">
                         {{ pub_formset.management_form }}
-                        
+                        {% for pub_form in pub_formset %}
                         {% for hidden in pub_form.hidden_fields %}{{ hidden }}{% endfor %}
                         <div
                             class="p-3 rounded-3 mb-3 {% if pub_form.instance.pk %}bg-light{% else %}bg-white border{% endif %}">
