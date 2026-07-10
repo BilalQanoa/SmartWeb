@@ -43,12 +43,12 @@
                 <span>Profile</span>
             </a>
             <a href="{% url 'dashboard:templates_dashboard' %}"
-               class="sidebar-link {% block nav_templates %}{% endblock %}">
+                class="sidebar-link {% block nav_templates %}{% endblock %}">
                 <i class="bi bi-journal-text"></i>
                 <span>Templates</span>
             </a>
             <a href="{% url 'dashboard:setting_dashboard' %}"
-               class="sidebar-link {% block nav_settings %}{% endblock %}">
+                class="sidebar-link {% block nav_settings %}{% endblock %}">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>
@@ -77,24 +77,16 @@
 
         <!-- Top Bar -->
         <header class="dashboard-topbar">
-            <!-- <div class="topbar-search">
-                <i class="bi bi-search"></i>
-                <input type="search" placeholder="Search publications, tools, or papers..." class="topbar-search-input">
-            </div> -->
             <!--searchtop with search-->
             <div class="topbar-search">
                 <i class="bi bi-search"></i>
                 <input type="search" id="global-search" placeholder="Search publications, tools, or papers..."
-                       class="topbar-search-input" oninput="filterAssets(this.value)">
+                        class="topbar-search-input" oninput="filterAssets(this.value)">
             </div>
 
             <div class="topbar-actions">
-                <button class="topbar-bell">
-                    <i class="bi bi-bell"></i>
-                    <span class="topbar-bell-dot"></span>
-                </button>
                 <a href="{% url 'dashboard:setting_dashboard' %}"
-                   class="topbar-bell ms-1 d-inline-flex align-items-center justify-content-center text-decoration-none">
+                    class="topbar-bell ms-1 d-inline-flex align-items-center justify-content-center text-decoration-none">
                     <i class="bi bi-gear"></i>
                 </a>
             </div>
