@@ -177,24 +177,6 @@ class TeachingForm(forms.ModelForm):
             self.fields[fname].required = False
 
 
-# ── 4. Media ─────────────────────────────────────────────────────────────
-# class MediaForm(forms.ModelForm):
-#     class Meta:
-#         model  = Media
-#         fields = ['file_path', 'caption']
-#         widgets = {
-#             'file_path': forms.URLInput(attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'https://...'
-#             }),
-#             'caption': forms.TextInput(attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Image caption...'
-#             }),
-#         }
-
-
-
 
 
 # ── 4. Education ─────────────────────────────────────────────────────────
