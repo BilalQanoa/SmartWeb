@@ -1,0 +1,25 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block nav_profile %}active{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="row mb-3 p-3 border rounded shadow-sm form-row">
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    
+    {% for field in form.visible_fields %}
+        <div class="col-md-4">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <div class="col-md-1">
+        <button type="button" class="btn btn-danger remove-row">حذف</button>
+    </div>
+</div>
