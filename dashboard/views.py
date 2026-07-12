@@ -14,6 +14,7 @@ from django.db.models import Q
 
 def get_current_user(request):
     return User.objects.get(id=request.session['user_id'])
+
 def get_user_and_profile(request):
     user = User.objects.get(id=request.session['user_id'])
     try:
@@ -189,14 +190,6 @@ def toggle_visibility(request):
     else:
         messages.info(request, 'Your portfolio is now private.')
     return redirect('dashboard:main_dashboard')
-    # profile = get_profile(user)
-
-    # slug = request.POST.get('theme_slug')
-    # theme = get_object_or_404(Theme, slug=slug, is_active=True)
-    # profile.theme = theme
-    # profile.save()
-
-    # return redirect('dashboard:templates_dashboard')
 
 
 # ── Publications ──────────────────────────────────────────────────────────
@@ -300,99 +293,8 @@ def delete_teaching(request, teach_id):
     next_url = request.GET.get('next', '')
     if next_url.startswith('/'):
         return redirect(next_url)
-    # next_url = request.GET.get('next', '')
-    # if next_url.startswith('/'):
-    #     return redirect(next_url)
     return redirect('dashboard:main_dashboard')
 
-
-
-# def edit_profile(request):
-#     if 'user_id' not in request.session:
-#         return redirect('accounts:login')
-
-#     user, profile = get_user_and_profile(request)
-        # restrict search to the user's profile only
-#     form = ProfileForm(
-#         request.POST  or None,
-#         request.FILES or None,
-#         instance=profile
-#     )
-
-#     if form.is_valid():
-#         form.save()
-
-#         pub_ids = request.POST.getlist('pub_id[]')
-#         pub_titles = request.POST.getlist('pub_title[]')
-#         pub_dates = request.POST.getlist('pub_date[]')
-#         pub_pdfs = request.POST.getlist('pub_pdf[]')
-#         pub_githubs = request.POST.getlist('pub_github[]')
-
-#         for idx, title in enumerate(pub_titles):
-#             title_text = title.strip()
-#             if idx < len(pub_ids) and pub_ids[idx].strip():
-#                 pub = Publication.objects.filter(id=pub_ids[idx], profile=profile).first()
-#                 if pub:
-#                     if not title_text:
-#                         pub.delete()
-#                         continue
-#                     pub.title = title_text
-#                     pub.publication_date = pub_dates[idx] or None
-#                     pub.pdf_link = pub_pdfs[idx] if idx < len(pub_pdfs) else ''
-#                     pub.github_link = pub_githubs[idx] if idx < len(pub_githubs) else ''
-#                     pub.save()
-#                     continue
-#             if not title_text:
-#                 continue
-#             Publication.objects.create(
-#                 profile=profile,
-#                 title=title_text,
-#                 publication_date=pub_dates[idx] or None,
-#                 pdf_link=pub_pdfs[idx] if idx < len(pub_pdfs) else '',
-#                 github_link=pub_githubs[idx] if idx < len(pub_githubs) else '',
-#             )
-
-#         teach_ids = request.POST.getlist('teach_id[]')
-#         course_names = request.POST.getlist('course_name[]')
-#         course_semesters = request.POST.getlist('semester[]')
-#         course_descs = request.POST.getlist('course_desc[]')
-#         course_links = request.POST.getlist('syllabus_link[]')
-
-#         for idx, name in enumerate(course_names):
-#             name_text = name.strip()
-#             if idx < len(teach_ids) and teach_ids[idx].strip():
-#                 teach = Teaching.objects.filter(id=teach_ids[idx], profile=profile).first()
-#                 if teach:
-#                     if not name_text:
-#                         teach.delete()
-#                         continue
-#                     teach.course_name = name_text
-#                     teach.semester = course_semesters[idx] if idx < len(course_semesters) else ''
-#                     teach.description = course_descs[idx] if idx < len(course_descs) else ''
-#                     teach.syllabus_link = course_links[idx] if idx < len(course_links) else ''
-#                     teach.save()
-#                     continue
-#             if not name_text:
-#                 continue
-#             Teaching.objects.create(
-#                 profile=profile,
-#                 course_name=name_text,
-#                 semester=course_semesters[idx] if idx < len(course_semesters) else '',
-#                 description=course_descs[idx] if idx < len(course_descs) else '',
-#                 syllabus_link=course_links[idx] if idx < len(course_links) else '',
-#             )
-
-#         return redirect('dashboard:main_dashboard')
-
-#     publications = Publication.objects.filter(profile=profile)
-#     teachings = Teaching.objects.filter(profile=profile)
-
-#     return render(request, 'dashboard/profile.html', {
-#         'form'   : form,
-#         'profile': profile,
-#         'publications': publications,
-#         'teachings': teachings,
-#     })
 
 def edit_profile(request):
     if 'user_id' not in request.session:
@@ -437,38 +339,3 @@ def edit_profile(request):
         'cl_formset'   : cl_formset,
         'profile'      : profile,
     })
-
-
-# def search_dashboard(request):
-#     query = request.GET.get('q', '')
-    
-#     _, profile = get_user_and_profile(request) 
-
-#     results = {
-#         'publications': [],
-#         'teaching': [],
-#         'education': [],
-#     }
-    
-#     if query:
-#         # restrict search to the user's profile only
-#         results['publications'] = Publication.objects.filter(
-#             profile=profile, 
-#             title__icontains=query
-#         )
-        
-#         results['teaching'] = Teaching.objects.filter(
-#             profile=profile, 
-#             course_name__icontains=query
-#         )
-        
-#         results['education'] = Education.objects.filter(
-#             profile=profile, 
-#             degree__icontains=query
-#         )
-
-#     return render(request, 'dashboard/dashboard.html', {
-#         'results': results,
-#         'query': query,
-#         'profile': profile 
-#     })
