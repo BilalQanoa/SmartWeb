@@ -260,7 +260,7 @@ TeachingFormSet = inlineformset_factory(
 EducationFormSet = inlineformset_factory(
     Profile, Education,
     form=EducationForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 ContactLinkFormSet = inlineformset_factory(
