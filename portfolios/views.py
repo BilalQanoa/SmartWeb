@@ -28,8 +28,9 @@ from services.ai_extraction import (
     extract_cv_data,
     save_extracted_data,
 )
-from .models import Profile, Publication, Teaching, Theme
+from .models import Profile, Publication, Teaching, Theme, ContactLink
 from django.contrib import messages
+from django.db.models import Max
 from .forms import ProfileForm, PublicationForm, TeachingForm, EducationFormSet, PublicationFormSet, TeachingFormSet
 
 
@@ -218,6 +219,35 @@ def onboarding_two(request):
         if forms_valid:
             profile_form.save()
 
+            email_value = profile_form.cleaned_data.get('email', '').strip()
+            phone_value = profile_form.cleaned_data.get('phone_number', '').strip()
+
+            def _upsert_contact_link(link_type, label, value):
+                existing_link = profile.contact_links.filter(link_type=link_type).first()
+                if not value:
+                    if existing_link:
+                        existing_link.delete()
+                    return
+
+                if existing_link:
+                    existing_link.value = value
+                    existing_link.label = label
+                    existing_link.save()
+                    return
+
+                max_order = profile.contact_links.aggregate(max_order=Max('order_index'))['max_order']
+                order_index = 0 if max_order is None else max_order + 1
+                ContactLink.objects.create(
+                    profile=profile,
+                    link_type=link_type,
+                    label=label,
+                    value=value,
+                    order_index=order_index,
+                )
+
+            _upsert_contact_link('email', 'Email', email_value)
+            _upsert_contact_link('phone', 'Phone', phone_value)
+
             # Save inline formsets or fall back to legacy array parsing
             if not pub_legacy:
                 publication_formset.save()
@@ -363,6 +393,9 @@ def onboarding_three(request):
 
 def portfolio_detail(request, slug):
     profile = get_object_or_404(Profile, slug=slug, is_published=True)
+    theme = profile.theme
+    if not theme:
+        raise Http404('No theme assigned to this profile.')
     publications = Publication.objects.filter(profile=profile)
     # Normalize research interests: prefer ResearchInterest entries, fall back to
     # legacy `profile.research_interests` text (one per line).
@@ -377,7 +410,8 @@ def portfolio_detail(request, slug):
         from types import SimpleNamespace
         research_items = [SimpleNamespace(title=part, description='', tag_list=[]) for part in parts]
 
-    return render(request, 'portfolios/portfolio_detail.html', {
+    return render(request, theme.template_path, {
+        'theme': theme,
         'profile': profile,
         'publications': profile.publications.all(),
         'teachings': profile.teachings.all(),

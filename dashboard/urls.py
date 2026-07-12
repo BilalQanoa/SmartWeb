@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('templates/set/', views.set_theme_view, name='set_theme_dashboard'),
     path('profile/edit/', views.edit_profile,  name='edit_profile'), 
+    path('visibility/', views.toggle_visibility, name='toggle_visibility'),
 
     # Publications
     path('publication/add/',                    views.add_publication,    name='add_publication'),
@@ -21,6 +22,9 @@ urlpatterns = [
     path('teaching/edit/<int:teach_id>/',       views.edit_teaching,      name='edit_teaching'),
     path('teaching/delete/<int:teach_id>/',     views.delete_teaching,    name='delete_teaching'),
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 1ecde54fa6ff14707a7d4b30b3d0fc7a0722bad8
 
 ]

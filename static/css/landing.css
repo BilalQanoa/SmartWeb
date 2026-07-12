@@ -1,31 +1,4 @@
 .landing-page {
-    --brand-primary: #2D1B69;
-    --brand-secondary: #7C3AED;
-    --brand-accent: #FBBF24;
-    --brand-bg: #FAFAFA;
-    --brand-surface: #FFFFFF;
-    --brand-text: #1E1B4B;
-    --brand-muted: #4B5563;
-    --brand-border: rgba(45, 27, 105, 0.12);
-
-    --bs-primary: var(--brand-primary);
-    --bs-secondary: var(--brand-secondary);
-    --bs-link-color: var(--brand-primary);
-    --bs-link-hover-color: var(--brand-text);
-    --bs-btn-color: #ffffff;
-    --bs-btn-bg: var(--brand-primary);
-    --bs-btn-border-color: var(--brand-primary);
-    --bs-btn-hover-color: #ffffff;
-    --bs-btn-hover-bg: var(--brand-primary);
-    --bs-btn-hover-border-color: var(--brand-primary);
-    --bs-btn-active-bg: var(--brand-primary);
-    --bs-btn-active-border-color: var(--brand-primary);
-    --bs-btn-focus-shadow-rgb: 45, 27, 105;
-    --bs-body-color: var(--brand-text);
-    --bs-body-bg: var(--brand-surface);
-}
-
-body.landing-page {
     background: linear-gradient(180deg, #fcfbff 0%, #ffffff 100%);
     color: var(--brand-text);
     position: relative;

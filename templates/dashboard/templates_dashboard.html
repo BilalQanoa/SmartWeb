@@ -17,22 +17,22 @@
 
             {% for theme in themes %}
             <div class="template-card d-flex gap-3 p-3 {% if theme == active_theme %}active{% endif %}"
-                 data-slug="{{ theme.slug }}"
-                 data-name="{{ theme.name }}"
-                 data-version="{{ theme.palette.version|default:'1.0' }}"
-                 onclick="selectTheme(this)">
+                data-slug="{{ theme.slug }}"
+                data-name="{{ theme.name }}"
+                data-version="{{ theme.palette.version|default:'1.0' }}"
+                onclick="selectTheme(this)">
 
                 <!-- Mini preview using the theme's palette colors -->
                 <div class="template-card-img rounded-2 flex-shrink-0 d-flex flex-column p-2 overflow-hidden border"
-                     style="width: 100px; height: 100px; background: {{ theme.palette.paper|default:'#fbfaf7' }};">
+                    style="width: 100px; height: 100px; background: {{ theme.palette.paper|default:'#fbfaf7' }};">
                     <div class="rounded mb-2"
-                         style="height: 12px; width: 60%; background: {{ theme.palette.ink|default:'#111' }}; opacity: 0.85;"></div>
+                        style="height: 12px; width: 60%; background: {{ theme.palette.ink|default:'#111' }}; opacity: 0.85;"></div>
                     <div class="rounded mb-1"
-                         style="height: 4px; width: 80%; background: {{ theme.palette.accent|default:'#2d4a3e' }}; opacity: 0.7;"></div>
+                        style="height: 4px; width: 80%; background: {{ theme.palette.accent|default:'#2d4a3e' }}; opacity: 0.7;"></div>
                     <div class="rounded mb-1 flex-grow-1"
-                         style="background: {{ theme.palette.ink|default:'#111' }}; opacity: 0.06;"></div>
+                        style="background: {{ theme.palette.ink|default:'#111' }}; opacity: 0.06;"></div>
                     <div class="rounded"
-                         style="height: 14px; width: 30%; background: {{ theme.palette.accent|default:'#2d4a3e' }};"></div>
+                        style="height: 14px; width: 30%; background: {{ theme.palette.accent|default:'#2d4a3e' }};"></div>
                 </div>
 
                 <div class="d-flex flex-column justify-content-center">
@@ -71,8 +71,7 @@
             <div>
                 <h3 class="fw-bold mb-2">Live Preview</h3>
                 <p class="text-secondary mb-0" id="preview-title">
-                    {% if active_theme %}{{ active_theme.name }} &mdash; Version {{
-                    active_theme.palette.version|default:"1.0" }}{% else %}No theme selected{% endif %}
+                    {% if active_theme %}{{ active_theme.name }} &mdash; Version {{ active_theme.palette.version|default:"1.0" }}{% else %}No theme selected{% endif %}
                 </p>
             </div>
             <div class="d-flex gap-2">
