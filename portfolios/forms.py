@@ -194,20 +194,7 @@ class TeachingForm(forms.ModelForm):
 #         }
 
 
-# ── 5. Page ──────────────────────────────────────────────────────────────
-# class PageForm(forms.ModelForm):
-#     class Meta:
-#         model  = Page
-#         fields = ['title', 'order_index']
-#         widgets = {
-#             'title': forms.TextInput(attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'e.g. Publications'
-#             }),
-#             'order_index': forms.NumberInput(attrs={
-#                 'class': 'form-control'
-#             }),
-#         }
+
 
 
 # ── 4. Education ─────────────────────────────────────────────────────────
