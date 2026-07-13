@@ -54,7 +54,7 @@ def dashboard_view(request):
         'teach_count' : teachings.count(),
     })
 
-
+"""Manages template selection, displays a gallery of themes, and handles live previews."""
 def templates_view(request):
     if 'user_id' not in request.session:
         return redirect('accounts:login')
