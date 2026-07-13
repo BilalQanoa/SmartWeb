@@ -16,6 +16,7 @@ def get_current_user(request):
     return User.objects.get(id=request.session['user_id'])
 
 def get_user_and_profile(request):
+    """Fetches the user and their associated profile; creates a profile if it doesn't exist."""
     user = User.objects.get(id=request.session['user_id'])
     try:
         profile = Profile.objects.get(user=user)
@@ -28,6 +29,7 @@ def get_user_and_profile(request):
 
 
 def get_profile(user):
+    """Helper to get a profile or create a default one for a given user."""
     profile, _ = Profile.objects.get_or_create(
         user=user,
         defaults={'full_name': f"{user.first_name} {user.last_name}"}
