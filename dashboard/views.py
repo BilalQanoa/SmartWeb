@@ -339,9 +339,8 @@ def edit_profile(request):
         'cl_formset'   : cl_formset,
         'profile'      : profile,
     })
-<<<<<<< HEAD
+
 
 
  
-=======
->>>>>>> 1ecde54fa6ff14707a7d4b30b3d0fc7a0722bad8
+
