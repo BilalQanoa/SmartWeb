@@ -36,7 +36,7 @@ def get_profile(user):
     )
     return profile
 
-
+"""Manages template selection, displays a gallery of themes, and handles live previews."""
 def dashboard_view(request):
 
     if 'user_id' not in request.session:
